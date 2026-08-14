@@ -5,13 +5,13 @@ import {Button} from "@heroui/react";
 
 const Navbar = () => {
   return (
-    <div className="flex items-center justify-between w-full px-31 mx-auto py-5 bg-cream">
+    <div className="flex items-center justify-between w-full px-31 mx-auto py-5 bg-white/60 border-b border-sage-light" >
       <div className="flex items-center gap-2">
         <FaBookOpenReader className="text-4xl text-black" />
         <h1 className="text-forest text-2xl font-bold">StudyNook</h1>
       </div>
 
-      <ul className="flex items-center text-black font-semibold gap-2">
+      <ul className="flex items-center text-black font-semibold gap-2.5">
         <Link href={'/'}>
           <li>Home</li>
         </Link>

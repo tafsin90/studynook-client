@@ -13,11 +13,11 @@
 }
 
 /* Light theme */
-/* html.light,
+html.light,
 html.light body {
-  background-color: white;
-  color: green;
-} */
+  background-color: #dad7cd;
+  color: black;
+}
 
 /* Dark theme */
 /* html.dark,

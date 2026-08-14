@@ -2,7 +2,7 @@ import Link from "next/link";
 
 const Footer = () => {
   return (
-    <footer className="mt-auto mb-8 border-t border-cream py-8 bg-black text-white">
+    <footer className="mt-auto pb-8 border-t border-cream py-8 bg-black text-white">
       <div className="mx-auto max-w-7xl px-4">
         <div className="grid grid-cols-1 gap-8 md:grid-cols-3">
           {/* Links Section */}
