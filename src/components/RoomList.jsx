@@ -16,16 +16,16 @@ const RoomList = ({ rooms }) => {
       .includes(search.toLowerCase());
 
     const matchesAmenities = selectedAmenities.every((amenity) =>
-      room.amenities.includes(amenity)
+      room.amenities.includes(amenity),
     );
 
-    const matchesMinRate =
-      minRate === "" || room.hourlyRate >= Number(minRate);
+    const matchesMinRate = minRate === "" || room.hourlyRate >= Number(minRate);
 
-    const matchesMaxRate =
-      maxRate === "" || room.hourlyRate <= Number(maxRate);
+    const matchesMaxRate = maxRate === "" || room.hourlyRate <= Number(maxRate);
 
-    return matchesSearch && matchesAmenities && matchesMinRate && matchesMaxRate;
+    return (
+      matchesSearch && matchesAmenities && matchesMinRate && matchesMaxRate
+    );
   });
 
   const handleReset = () => {
@@ -49,10 +49,18 @@ const RoomList = ({ rooms }) => {
         onReset={handleReset}
       />
 
-      <div className="grid flex-1 grid-cols-1 gap-2.5 md:grid-cols-2 xl:grid-cols-3">
-        {filteredRooms.map((room) => (
-          <RoomCard key={room._id} room={room} />
-        ))}
+      <div className="flex-1">
+        {filteredRooms.length === 0 ? (
+          <p className="flex h-full items-center justify-center text-4xl font-medium text-center text-green-900 dark:text-gray-300">
+            No room found
+          </p>
+        ) : (
+          <div className="grid grid-cols-1 gap-2.5 md:grid-cols-2 xl:grid-cols-3">
+            {filteredRooms.map((room) => (
+              <RoomCard key={room._id} room={room} />
+            ))}
+          </div>
+        )}
       </div>
     </div>
   );
