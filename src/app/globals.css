@@ -9,14 +9,14 @@
   --color-forest: #3a5a40;
   --color-sage-light: #a3b18a;
   --color-sage: #588157;
-  --color-cream: #dad7cd;
+  --color-cream: #e7e9df;
   --color-dark-surface: #171a18;
 }
 
 /* Light theme */
 html.light,
 html.light body {
-  background-color: #dad7cd;
+  background-color: #e7e9df;
   color: black;
 }
 
