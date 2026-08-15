@@ -1,5 +1,6 @@
 "use client";
 
+import { authClient } from "@/lib/auth-client";
 import {
   Button,
   Description,
@@ -10,8 +11,29 @@ import {
   TextField,
 } from "@heroui/react";
 import Link from "next/link";
+import { redirect } from "next/navigation";
 
 const LoginPage = () => {
+  const onSubmit = async (e) => {
+    e.preventDefault();
+    const formData = new FormData(e.currentTarget);
+    const user = Object.fromEntries(formData.entries());
+    // console.log(user)
+    const { data, error } = await authClient.signIn.email({
+      email: user.email, // required
+      password: user.password
+    });
+    // console.log(data)
+    // console.log(error)
+    if (data) {
+      // toast
+      redirect("/");
+    }
+    if (error) {
+      // toast
+    }
+  };
+
   return (
     <div className="flex min-h-screen items-center justify-center bg-cream dark:bg-forest-dark">
       <div className="w-full max-w-md rounded-2xl border border-sage-light/40 bg-white p-8 shadow-lg dark:border-sage/30 dark:bg-forest">
@@ -26,8 +48,7 @@ const LoginPage = () => {
           </p>
         </div>
 
-        <Form className="flex w-full flex-col gap-5">
-
+        <Form onSubmit={onSubmit} className="flex w-full flex-col gap-5">
           {/* Email */}
           <TextField
             isRequired
@@ -87,7 +108,8 @@ const LoginPage = () => {
             />
 
             <Description className="mt-1 text-xs text-gray-500 dark:text-sage-light">
-              Must be at least 8 characters with 1 uppercase, 1 lowercase and 1 number
+              Must be at least 8 characters with 1 uppercase, 1 lowercase and 1
+              number
             </Description>
 
             <FieldError className="mt-1 text-sm text-red-500" />
