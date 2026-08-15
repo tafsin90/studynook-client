@@ -6,12 +6,12 @@ import { FaArrowRight, FaBookOpenReader } from "react-icons/fa6";
 
 const Banner = () => {
   return (
-    <section className="relative overflow-hidden bg-cream dark:bg-forest-dark ">
+    <section className="relative overflow-hidden bg-cream dark:bg-dark-surface ">
       {/* Decorative shapes */}
       <div className="absolute -right-20 -top-20 h-72 w-72 rounded-full bg-sage-light/30 blur-3xl" />
       <div className="absolute -bottom-24 -left-20 h-72 w-72 rounded-full bg-sage/20 blur-3xl" />
 
-      <div className="relative mx-auto flex max-w-7xl flex-col items-center gap-12 px-6 py-16 md:flex-row md:py-24 lg:px-8">
+      <div className="relative flex flex-col items-center gap-12 px-6 py-16 md:flex-row md:py-24 lg:px-8">
         
         {/* Text */}
         <div className="flex-1 text-center md:text-left">

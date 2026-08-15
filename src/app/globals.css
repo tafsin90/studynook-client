@@ -10,6 +10,7 @@
   --color-sage-light: #a3b18a;
   --color-sage: #588157;
   --color-cream: #dad7cd;
+  --color-dark-surface: #171a18;
 }
 
 /* Light theme */
@@ -20,10 +21,8 @@ html.light body {
 }
 
 /* Dark theme */
-/* html.dark,
+html.dark,
 html.dark body {
-  background-color: green;
-  color: white;
-}  */
-
-
+  background-color: #171a18;
+  color: #f3f4f2;
+}
