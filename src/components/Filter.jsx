@@ -43,8 +43,8 @@ const Filter = (props) => {
           onClick={onReset}
           className="flex items-center gap-3 text-xs font-medium text-gray-200 transition hover:text-white hover:cursor-pointer border px-1 py-0.5 rounded-lg border-sage"
         >
-          <TbZoomReset size={16} />
           <span> Reset</span>
+          <TbZoomReset size={16} />
         </button>
       </div>
 
