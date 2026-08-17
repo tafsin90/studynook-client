@@ -26,7 +26,7 @@ const AddRoomPage = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
+const form = e.currentTarget;
     const formData = new FormData(e.currentTarget);
     const roomData = Object.fromEntries(formData.entries());
 
@@ -37,35 +37,38 @@ const AddRoomPage = () => {
       setCapacityError("Maximum capacity cannot be less than minimum capacity");
       return;
     }
-
     setCapacityError("");
 
     const room = {
       roomImageUrl: roomData.roomImageUrl,
       roomName: roomData.roomName,
-      roomDescription: roomData.roomDescription,
+      shortDescription: roomData.shortDescription,
       roomFloor: roomData.roomFloor,
-
       seatCapacity: {
         min: minCapacity,
         max: maxCapacity,
       },
-
       roomRate: Number(roomData.roomRate),
-
       amenities: formData.getAll("amenities"),
     };
 
-    console.log(room);
+    // console.log(room);
 
-    // Later:
-    // const res = await fetch("http://localhost:5000/rooms", {
-    //   method: "POST",
-    //   headers: {
-    //     "Content-Type": "application/json",
-    //   },
-    //   body: JSON.stringify(room),
-    // });
+    const res = await fetch("http://localhost:5000/add-room", {
+      method: "POST",
+      headers: {
+        "content-type": "application/json",
+      },
+      body: JSON.stringify(room),
+    });
+    const data = await res.json();
+    console.log(data)
+
+    if (res.ok) {
+      form.reset();
+    } else {
+      console.error(data);
+    }
   };
 
   return (
@@ -110,7 +113,7 @@ const AddRoomPage = () => {
           {/* Short Description */}
           <TextField
             isRequired
-            name="roomDescription"
+            name="shortDescription"
             validate={(value) => {
               if (value.length < 10) {
                 return "Description must be at least 10 characters";
