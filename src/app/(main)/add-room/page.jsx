@@ -43,12 +43,12 @@ const form = e.currentTarget;
       roomImageUrl: roomData.roomImageUrl,
       roomName: roomData.roomName,
       shortDescription: roomData.shortDescription,
-      roomFloor: roomData.roomFloor,
+      floor: roomData.roomFloor,
       seatCapacity: {
         min: minCapacity,
         max: maxCapacity,
       },
-      roomRate: Number(roomData.roomRate),
+      hourlyRate: Number(roomData.roomRate),
       amenities: formData.getAll("amenities"),
     };
 
