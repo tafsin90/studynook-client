@@ -7,8 +7,8 @@ export async function proxy(request) {
     const session = await auth.api.getSession({
         headers: await headers(),
     });
-     console.log("SESSION:", session);
-  console.log("HEADERS:", Object.fromEntries(request.headers.entries()));
+  //    console.log("SESSION:", session);
+  // console.log("HEADERS:", Object.fromEntries(request.headers.entries()));
   if(!session){
     return NextResponse.redirect(new URL('/login', request.url))
   }
@@ -18,5 +18,5 @@ export async function proxy(request) {
 // export default function proxy(request) { ... }
  
 export const config = {
-  matcher: ['/rooms/:path'],
+  matcher: ['/my-listings'],
 }

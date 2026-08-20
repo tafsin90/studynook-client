@@ -1,3 +1,9 @@
+import { BookingForm } from "@/components/Bookingform";
+import { DatePicker } from "@/components/DatePicker";
+import TimePicker from "@/components/TimePicker";
+import { auth } from "@/lib/auth";
+import { Label, ListBox, Select } from "@heroui/react";
+import { headers } from "next/headers";
 import Image from "next/image";
 import Link from "next/link";
 import {
@@ -11,9 +17,19 @@ import {
 const RoomDetailsPage = async ({ params }) => {
   const { id } = await params;
 
-  const res = await fetch(`http://localhost:5000/rooms/${id}`);
-  const room = await res.json();
+  const session = await auth.api.getSession({
+    headers: await headers(), // you need to pass the headers object.
+  });
+  const user = session?.user;
 
+  const res = await fetch(`http://localhost:5000/rooms/${id}`);
+  if (!res.ok) {
+    throw new Error(`Failed to load room: ${res.status}`);
+  }
+
+  const room = await res.json();
+  // console.log(room);
+  // console.log(user);
   const {
     roomImageUrl,
     roomName,
@@ -28,7 +44,6 @@ const RoomDetailsPage = async ({ params }) => {
   return (
     <main className="min-h-screen bg-cream px-4 py-10 dark:bg-forest-dark md:px-8">
       <div className="mx-auto max-w-7xl">
-
         {/* Back to Rooms */}
         <Link
           href="/rooms"
@@ -40,7 +55,6 @@ const RoomDetailsPage = async ({ params }) => {
 
         {/* Main Card */}
         <div className="overflow-hidden rounded-2xl border border-sage-light/50 bg-white shadow-md dark:border-sage/30 dark:bg-forest">
-
           {/* Image */}
           <div className="relative h-[300px] w-full md:h-[450px]">
             <Image
@@ -56,9 +70,6 @@ const RoomDetailsPage = async ({ params }) => {
 
             {/* Room name */}
             <div className="absolute bottom-6 left-6">
-              <p className="mb-2 text-sm font-medium text-sage-light">
-                Study Room
-              </p>
 
               <h1 className="text-3xl font-bold text-white md:text-4xl">
                 {roomName}
@@ -68,7 +79,6 @@ const RoomDetailsPage = async ({ params }) => {
 
           {/* Content */}
           <div className="grid gap-10 p-6 md:p-10 lg:grid-cols-[1fr_340px]">
-
             {/* Left Section */}
             <div>
               <section>
@@ -88,7 +98,6 @@ const RoomDetailsPage = async ({ params }) => {
                 </h2>
 
                 <div className="mt-4 grid gap-4 sm:grid-cols-3">
-
                   {/* Capacity */}
                   <div className="rounded-xl border border-sage-light/40 bg-cream/60 p-5 dark:border-sage/30 dark:bg-forest-dark">
                     <FaChair className="text-2xl text-forest dark:text-sage-light" />
@@ -128,7 +137,6 @@ const RoomDetailsPage = async ({ params }) => {
                       ${hourlyRate} / hour
                     </p>
                   </div>
-
                 </div>
               </section>
 
@@ -149,28 +157,21 @@ const RoomDetailsPage = async ({ params }) => {
                   ))}
                 </div>
               </section>
-
             </div>
 
             {/* Booking Card */}
             <div className="h-fit rounded-2xl border border-sage-light/50 bg-cream p-6 dark:border-sage/30 dark:bg-forest-dark">
 
-              {/* Icon */}
-              <div className="flex h-12 w-12 items-center justify-center rounded-xl bg-forest text-white">
-                <FaBookOpen />
-              </div>
-
-              <h2 className="mt-5 text-xl font-bold text-forest-dark dark:text-cream">
+              <h2 className="mt-3 text-2xl font-bold text-forest-dark dark:text-cream">
                 Book this room
               </h2>
 
               <p className="mt-2 text-sm leading-6 text-forest-dark/70 dark:text-cream/70">
-                Reserve this study space for your next focused study
-                session.
+                Reserve this study space for your next focused study session.
               </p>
 
               {/* Price */}
-              <div className="mt-6 border-y border-sage-light/40 py-5">
+              <div className="mt-3 border-y border-sage-light/40 py-3">
                 <p className="text-sm text-forest-dark/60 dark:text-cream/60">
                   Price
                 </p>
@@ -186,14 +187,16 @@ const RoomDetailsPage = async ({ params }) => {
                 </div>
               </div>
 
-              {/* Booking Button */}
-              <Link
-                href={`/rooms/${id}/book`}
-                className="mt-6 flex w-full items-center justify-center rounded-lg bg-forest px-5 py-3 font-semibold text-white transition hover:bg-sage"
-              >
-                Book This Room
-              </Link>
-
+              {user ? (
+                <BookingForm room={room} roomId={id} user={user} />
+              ) : (
+                <Link
+                  href={`/login?callbackUrl=${encodeURIComponent(`/rooms/${id}`)}`}
+                  className="mt-3 flex w-full items-center justify-center rounded-lg bg-forest px-5 py-3 font-semibold text-white transition hover:bg-sage"
+                >
+                  Login To Book This Room
+                </Link>
+              )}
             </div>
           </div>
         </div>

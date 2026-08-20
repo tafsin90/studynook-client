@@ -11,23 +11,30 @@ import {
   TextField,
 } from "@heroui/react";
 import Link from "next/link";
-import { redirect } from "next/navigation";
+import {  useRouter, useSearchParams } from "next/navigation";
+
 
 const LoginPage = () => {
+
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const callbackUrl = searchParams.get("callbackUrl") || "/"
+
+
   const onSubmit = async (e) => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
     const user = Object.fromEntries(formData.entries());
     // console.log(user)
     const { data, error } = await authClient.signIn.email({
-      email: user.email, // required
+      email: user.email, 
       password: user.password
     });
     // console.log(data)
     // console.log(error)
     if (data) {
       // toast
-      redirect("/");
+      router.push(callbackUrl);
     }
     if (error) {
       // toast
