@@ -14,6 +14,7 @@ import {
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { FaBookOpenReader } from "react-icons/fa6";
+import { toast } from "react-toastify";
 
 
 
@@ -73,6 +74,7 @@ const EditRoomModal = ({ room }) => {
     if (res.ok) {
       router.refresh();
       setIsOpen(false)
+      toast.info("Room has been edited.")
     }
   };
 

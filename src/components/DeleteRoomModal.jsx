@@ -2,6 +2,7 @@
 
 import { AlertDialog, Button } from "@heroui/react";
 import { redirect } from "next/navigation";
+import { toast } from "react-toastify";
 
 export function DeleteRoomModal({ room }) {
   const handleDelete = async () => {
@@ -12,7 +13,10 @@ export function DeleteRoomModal({ room }) {
       },
     });
     const data = await res.json(); 
-    redirect('/rooms');
+    if(res.ok){
+        toast.info("Room deleted permanently.")
+        redirect('/rooms');
+    }
   };
 
   return (
