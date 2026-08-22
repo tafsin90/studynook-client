@@ -4,13 +4,14 @@ import { AlertDialog, Button } from "@heroui/react";
 import { redirect } from "next/navigation";
 import { toast } from "react-toastify";
 
-export function DeleteRoomModal({ room }) {
+export function DeleteRoomModal({ room, user }) {
   const handleDelete = async () => {
     const res = await fetch(`http://localhost:5000/rooms/${room._id}`, {
       method: "DELETE",
       headers: {
         "content-type": "application/json"
       },
+      body: JSON.stringify({userId: user.id})
     });
     const data = await res.json(); 
     if(res.ok){

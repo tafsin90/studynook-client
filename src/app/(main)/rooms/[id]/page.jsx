@@ -57,7 +57,7 @@ const RoomDetailsPage = async ({ params }) => {
             <div className=" flex gap-3">
               <EditRoomModal room={room}></EditRoomModal>
 
-              <DeleteRoomModal room={room} ></DeleteRoomModal>
+              <DeleteRoomModal room={room} user={user} ></DeleteRoomModal>
             </div>
           )}
         </section>
