@@ -1,6 +1,8 @@
 import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
 import ThemeProviderWrapper from "@/components/provider/ThemeProviderWrapper";
+import { ToastContainer } from "react-toastify";
+
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -26,6 +28,7 @@ export default function RootLayout({ children }) {
     >
       <body className="min-h-full">
         <ThemeProviderWrapper>{children}</ThemeProviderWrapper>
+        <ToastContainer position="top-right" ></ToastContainer>
       </body>
     </html>
   );

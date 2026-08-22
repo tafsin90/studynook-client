@@ -1,5 +1,6 @@
 "use client";
 
+import { authClient } from "@/lib/auth-client";
 import {
   Button,
   Description,
@@ -13,6 +14,7 @@ import {
 import { useState } from "react";
 
 const AddRoomPage = () => {
+  
   const [capacityError, setCapacityError] = useState("");
 
   const amenityOptions = [
@@ -23,10 +25,11 @@ const AddRoomPage = () => {
     "Quiet Zone",
     "Air Conditioning",
   ];
-
+  const { data: session } = authClient.useSession();
+  // console.log(session.user.id)
   const handleSubmit = async (e) => {
     e.preventDefault();
-const form = e.currentTarget;
+    const form = e.currentTarget;
     const formData = new FormData(e.currentTarget);
     const roomData = Object.fromEntries(formData.entries());
 
@@ -40,6 +43,7 @@ const form = e.currentTarget;
     setCapacityError("");
 
     const room = {
+      userId: session.user.id,
       roomImageUrl: roomData.roomImageUrl,
       roomName: roomData.roomName,
       shortDescription: roomData.shortDescription,
@@ -52,7 +56,7 @@ const form = e.currentTarget;
       amenities: formData.getAll("amenities"),
     };
 
-    // console.log(room);
+    console.log(room);
 
     const res = await fetch("http://localhost:5000/add-room", {
       method: "POST",
@@ -62,7 +66,7 @@ const form = e.currentTarget;
       body: JSON.stringify(room),
     });
     const data = await res.json();
-    console.log(data)
+    console.log(data);
 
     if (res.ok) {
       form.reset();

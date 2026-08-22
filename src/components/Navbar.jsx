@@ -112,7 +112,7 @@ const Navbar = () => {
                   className="whitespace-nowrap"
                 >
                   <Link href="/profile" className="block w-full font-semibold">
-                    {user.name}'s profile
+                    {user.name}&apos;s profile
                   </Link>
                 </Dropdown.Item>
 

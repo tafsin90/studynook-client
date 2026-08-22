@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import { DatePicker } from "@/components/DatePicker";
 import TimePicker from "@/components/TimePicker";
+import { toast } from "react-toastify";
 
 export function BookingForm({ room, roomId, user }) {
   const router = useRouter();
@@ -15,15 +16,11 @@ export function BookingForm({ room, roomId, user }) {
 
   // Calculate duration
   const durationHours =
-    startTime !== null && endTime !== null
-      ? endTime - startTime
-      : null;
+    startTime !== null && endTime !== null ? endTime - startTime : null;
 
   // Calculate total price
   const totalCost =
-    durationHours !== null
-      ? durationHours * room.hourlyRate
-      : null;
+    durationHours !== null ? durationHours * room.hourlyRate : null;
 
   // Convert 24-hour number to AM/PM string
   const formatTime = (hour) => {
@@ -41,11 +38,7 @@ export function BookingForm({ room, roomId, user }) {
     setError("");
 
     // Check date and time
-    if (
-      date === null ||
-      startTime === null ||
-      endTime === null
-    ) {
+    if (date === null || startTime === null || endTime === null) {
       setError("Please select a date, start time, and end time.");
       return;
     }
@@ -74,11 +67,13 @@ export function BookingForm({ room, roomId, user }) {
       date: date.toString(),
       startTime: startTimeString,
       endTime: endTimeString,
+      startHour: startTime,
+      endHour: endTime,
       duration: durationHours,
       price: totalCost,
     };
 
-    console.log("Booking Data:", bookingData);
+    // console.log("Booking Data:", bookingData);
 
     try {
       const res = await fetch("http://localhost:5000/bookings", {
@@ -89,14 +84,16 @@ export function BookingForm({ room, roomId, user }) {
         body: JSON.stringify(bookingData),
       });
       const data = await res.json();
-      alert("Room booked successfully!");
+      if (res.status === 409 ){
+        setError(data.message )
+        return;
+      }
+      toast.success("Room Booked Successfully.");
 
+      router.refresh();
       // router.push("/my-bookings");
     } catch (error) {
-      setError(
-        error.message ||
-          "Something went wrong. Please try again."
-      );
+      setError(error.message || "Something went wrong. Please try again.");
     }
   };
 
@@ -104,31 +101,19 @@ export function BookingForm({ room, roomId, user }) {
     <div className="mt-3">
       {/* Date */}
       <section>
-        <DatePicker
-          value={date}
-          onChange={setDate}
-        />
+        <DatePicker value={date} onChange={setDate} />
       </section>
 
       {/* Time */}
       <section className="mt-3 flex gap-4">
-        <TimePicker
-          label="Start"
-          value={startTime}
-          onChange={setStartTime}
-        />
+        <TimePicker label="Start" value={startTime} onChange={setStartTime} />
 
-        <TimePicker
-          label="End"
-          value={endTime}
-          onChange={setEndTime}
-        />
+        <TimePicker label="End" value={endTime} onChange={setEndTime} />
       </section>
 
       {/* Price Preview */}
       {durationHours !== null && durationHours > 0 && (
         <div className="mt-4 rounded-lg bg-sage-light/20 px-4 py-3 dark:bg-sage/20">
-
           {/* Duration */}
           <div className="flex items-center justify-between text-sm">
             <span className="text-forest-dark/70 dark:text-cream/70">
@@ -136,8 +121,7 @@ export function BookingForm({ room, roomId, user }) {
             </span>
 
             <span className="font-semibold text-forest-dark dark:text-cream">
-              {durationHours}{" "}
-              {durationHours === 1 ? "hour" : "hours"}
+              {durationHours} {durationHours === 1 ? "hour" : "hours"}
             </span>
           </div>
 
@@ -168,11 +152,7 @@ export function BookingForm({ room, roomId, user }) {
       )}
 
       {/* Error */}
-      {error && (
-        <p className="mt-3 text-sm text-red-500">
-          {error}
-        </p>
-      )}
+      {error && <p className="mt-3 text-sm text-red-500">{error}</p>}
 
       {/* Booking Button */}
       <button

@@ -1,14 +1,13 @@
 import { BookingForm } from "@/components/Bookingform";
-import { DatePicker } from "@/components/DatePicker";
-import TimePicker from "@/components/TimePicker";
+import { DeleteRoomModal } from "@/components/DeleteRoomModal";
+import EditRoomModal from "@/components/EditRoomModal";
 import { auth } from "@/lib/auth";
-import { Label, ListBox, Select } from "@heroui/react";
 import { headers } from "next/headers";
 import Image from "next/image";
 import Link from "next/link";
 import {
   FaArrowLeft,
-  FaBookOpen,
+  FaCalendarCheck,
   FaChair,
   FaClock,
   FaLayerGroup,
@@ -23,14 +22,11 @@ const RoomDetailsPage = async ({ params }) => {
   const user = session?.user;
 
   const res = await fetch(`http://localhost:5000/rooms/${id}`);
-  if (!res.ok) {
-    throw new Error(`Failed to load room: ${res.status}`);
-  }
-
   const room = await res.json();
   // console.log(room);
   // console.log(user);
   const {
+    userId,
     roomImageUrl,
     roomName,
     shortDescription,
@@ -38,20 +34,33 @@ const RoomDetailsPage = async ({ params }) => {
     seatCapacity,
     hourlyRate,
     amenities,
+    bookingCount,
   } = room;
   const { min, max } = seatCapacity;
+  const isOwner = user?.id === userId;
 
   return (
     <main className="min-h-screen bg-cream px-4 py-10 dark:bg-forest-dark md:px-8">
       <div className="mx-auto max-w-7xl">
-        {/* Back to Rooms */}
-        <Link
-          href="/rooms"
-          className="mb-6 inline-flex items-center gap-2 text-sm font-semibold text-forest transition hover:text-sage dark:text-sage-light"
-        >
-          <FaArrowLeft />
-          Back to Rooms
-        </Link>
+        <section className="flex items-center justify-between py-4">
+          {/* Back to Rooms */}
+          <Link
+            href="/rooms"
+            className=" inline-flex items-center gap-2  font-semibold  text-forest transition hover:text-sage dark:text-sage-light"
+          >
+            <FaArrowLeft />
+            Back to Rooms
+          </Link>
+
+          {/* edit & delete button */}
+          {isOwner && (
+            <div className=" flex gap-3">
+              <EditRoomModal room={room}></EditRoomModal>
+
+              <DeleteRoomModal room={room} ></DeleteRoomModal>
+            </div>
+          )}
+        </section>
 
         {/* Main Card */}
         <div className="overflow-hidden rounded-2xl border border-sage-light/50 bg-white shadow-md dark:border-sage/30 dark:bg-forest">
@@ -70,7 +79,6 @@ const RoomDetailsPage = async ({ params }) => {
 
             {/* Room name */}
             <div className="absolute bottom-6 left-6">
-
               <h1 className="text-3xl font-bold text-white md:text-4xl">
                 {roomName}
               </h1>
@@ -97,7 +105,7 @@ const RoomDetailsPage = async ({ params }) => {
                   Room Information
                 </h2>
 
-                <div className="mt-4 grid gap-4 sm:grid-cols-3">
+                <div className="mt-4 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
                   {/* Capacity */}
                   <div className="rounded-xl border border-sage-light/40 bg-cream/60 p-5 dark:border-sage/30 dark:bg-forest-dark">
                     <FaChair className="text-2xl text-forest dark:text-sage-light" />
@@ -137,6 +145,19 @@ const RoomDetailsPage = async ({ params }) => {
                       ${hourlyRate} / hour
                     </p>
                   </div>
+
+                  {/* Booking Count */}
+                  <div className="rounded-xl border border-sage-light/40 bg-cream/60 p-5 dark:border-sage/30 dark:bg-forest-dark">
+                    <FaCalendarCheck className="text-2xl text-forest dark:text-sage-light" />
+
+                    <p className="mt-4 text-sm text-forest-dark/60 dark:text-cream/60">
+                      Times Booked
+                    </p>
+
+                    <p className="mt-1 font-semibold text-forest-dark dark:text-cream">
+                      {bookingCount ?? 0}
+                    </p>
+                  </div>
                 </div>
               </section>
 
@@ -161,7 +182,6 @@ const RoomDetailsPage = async ({ params }) => {
 
             {/* Booking Card */}
             <div className="h-fit rounded-2xl border border-sage-light/50 bg-cream p-6 dark:border-sage/30 dark:bg-forest-dark">
-
               <h2 className="mt-3 text-2xl font-bold text-forest-dark dark:text-cream">
                 Book this room
               </h2>
