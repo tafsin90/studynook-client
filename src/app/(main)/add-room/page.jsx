@@ -11,11 +11,14 @@ import {
   TextArea,
   TextField,
 } from "@heroui/react";
+import { redirect, useRouter } from "next/navigation";
 import { useState } from "react";
+import { toast } from "react-toastify";
 
 const AddRoomPage = () => {
-  
   const [capacityError, setCapacityError] = useState("");
+
+  const router = useRouter();
 
   const amenityOptions = [
     "Whiteboard",
@@ -56,7 +59,7 @@ const AddRoomPage = () => {
       amenities: formData.getAll("amenities"),
     };
 
-    console.log(room);
+    // console.log(room);
 
     const res = await fetch("http://localhost:5000/add-room", {
       method: "POST",
@@ -66,10 +69,12 @@ const AddRoomPage = () => {
       body: JSON.stringify(room),
     });
     const data = await res.json();
-    console.log(data);
+    // console.log(data);
 
     if (res.ok) {
+      toast.success("Room added successfully.");
       form.reset();
+      router.push("/my-listings");
     } else {
       console.error(data);
     }

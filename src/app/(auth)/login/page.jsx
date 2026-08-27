@@ -10,16 +10,15 @@ import {
   Label,
   TextField,
 } from "@heroui/react";
+import { Icon } from "@iconify/react";
+import { createAuthClient } from "better-auth/react";
 import Link from "next/link";
-import {  useRouter, useSearchParams } from "next/navigation";
-
+import { useRouter, useSearchParams } from "next/navigation";
 
 const LoginPage = () => {
-
   const router = useRouter();
   const searchParams = useSearchParams();
-  const callbackUrl = searchParams.get("callbackUrl") || "/"
-
+  const callbackUrl = searchParams.get("callbackUrl") || "/";
 
   const onSubmit = async (e) => {
     e.preventDefault();
@@ -27,8 +26,8 @@ const LoginPage = () => {
     const user = Object.fromEntries(formData.entries());
     // console.log(user)
     const { data, error } = await authClient.signIn.email({
-      email: user.email, 
-      password: user.password
+      email: user.email,
+      password: user.password,
     });
     // console.log(data)
     // console.log(error)
@@ -39,6 +38,12 @@ const LoginPage = () => {
     if (error) {
       // toast
     }
+  };
+  const handelGoogle = async () => {
+    const authClient = createAuthClient();
+    const data = await authClient.signIn.social({
+      provider: "google",
+    });
   };
 
   return (
@@ -139,7 +144,14 @@ const LoginPage = () => {
               Reset
             </Button>
           </div>
-          <div className="mt-2 text-center text-sm text-gray-600 dark:text-sage-light">
+          <Button className="w-full" variant="tertiary" onClick={handelGoogle}>
+            <Icon icon="devicon:google" />
+            Sign in with Google
+          </Button>
+          <div
+            className="mt-2 text-center text-sm text-gray-600 dark:text-sage-light"
+            onClick={handelGoogle}
+          >
             Don't have an account?{" "}
             <Link
               href="/register"

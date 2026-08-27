@@ -10,6 +10,7 @@ import {
   Label,
   TextField,
 } from "@heroui/react";
+import { Icon } from "@iconify/react";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 
@@ -19,7 +20,7 @@ const RegisterPage = () => {
     const formData = new FormData(e.currentTarget);
     const user = Object.fromEntries(formData.entries());
     // console.log(user)
-    
+
     const { data, error } = await authClient.signUp.email({
       name: user.name,
       email: user.email,
@@ -28,14 +29,20 @@ const RegisterPage = () => {
     });
     // console.log(data)
     // console.log(error)
-    if(data){
+    if (data) {
       // toast
-      redirect('/')
+      redirect("/");
     }
-    if(error){
+    if (error) {
       // toast
     }
   };
+  const handelGoogle = async () => {
+      const authClient = createAuthClient();
+      const data = await authClient.signIn.social({
+        provider: "google",
+      });
+    };
   return (
     <div className="flex min-h-screen items-center justify-center bg-cream dark:bg-forest-dark">
       <div className="w-full max-w-md rounded-2xl border border-sage-light/40 bg-white p-8 shadow-lg dark:border-sage/30 dark:bg-forest">
@@ -173,6 +180,10 @@ const RegisterPage = () => {
               Reset
             </Button>
           </div>
+          <Button className="w-full" variant="tertiary" onClick={handelGoogle}>
+            <Icon icon="devicon:google" />
+            Sign in with Google
+          </Button>
           <div className="mt-2 text-center text-sm text-gray-600 dark:text-sage-light">
             Already have an account?{" "}
             <Link

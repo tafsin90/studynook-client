@@ -6,7 +6,7 @@ export default async function MyBookingsPage() {
   const session = await auth.api.getSession({
     headers: await headers(),
   });
-  const userId = session.user.id;
+  const userId = session?.user.id;
 
   // Update expired bookings first
   await fetch("http://localhost:5000/bookings/status", {

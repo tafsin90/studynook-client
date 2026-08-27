@@ -8,6 +8,7 @@ import { usePathname } from "next/navigation";
 import { Bars } from "@gravity-ui/icons";
 
 const Navbar = () => {
+  
   const pathname = usePathname();
 
   const { data: session, isPending } = authClient.useSession();
@@ -46,6 +47,7 @@ const Navbar = () => {
     );
   }
 
+  
   return (
     <div className="sticky top-0 z-50 flex items-center justify-between w-full px-31 mx-auto py-5 bg-gray-200 border-b border-sage-light">
       <div className="flex items-center gap-2">
@@ -81,8 +83,9 @@ const Navbar = () => {
             <Avatar.Image
               alt="user.name"
               src={
-                user.image ? user.image : user.name?.slice(0, 2).toUpperCase()
+                user?.image
               }
+              referrerPolicy="no-referrer"
             />
             <Avatar.Fallback>
               {user.name?.slice(0, 2).toUpperCase()}
