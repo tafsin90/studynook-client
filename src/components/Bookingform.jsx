@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { DatePicker } from "@/components/DatePicker";
 import TimePicker from "@/components/TimePicker";
 import { toast } from "react-toastify";
+import { format } from "date-fns";
 
 export function BookingForm({ room, roomId, user }) {
   const router = useRouter();
@@ -64,13 +65,14 @@ export function BookingForm({ room, roomId, user }) {
       roomId: roomId,
       imageUrl: room.roomImageUrl,
       roomName: room.roomName,
-      date: date.toString(),
+      date: format(new Date(date), "yyyy-MM-dd"),
       startTime: startTimeString,
       endTime: endTimeString,
       startHour: startTime,
       endHour: endTime,
       duration: durationHours,
       price: totalCost,
+      status: "Confirmed"
     };
 
     // console.log("Booking Data:", bookingData);
