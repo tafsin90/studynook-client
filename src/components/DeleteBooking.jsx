@@ -12,7 +12,7 @@ export function DeleteBooking({ userId, bookingId }) {
   const handleCancel = async () => {
     setIsDeleting(true);
     const res = await fetch(`http://localhost:5000/bookings/${bookingId}`, {
-      method: "DELETE",
+      method: "PATCH",
       headers: { "content-type": "application/json" },
       body: JSON.stringify({ userId }),
     });

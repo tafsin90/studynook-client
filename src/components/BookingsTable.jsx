@@ -1,4 +1,4 @@
-import {  Chip, Table } from "@heroui/react";
+import { Chip, Table } from "@heroui/react";
 import Image from "next/image";
 import { format } from "date-fns";
 import { DeleteBooking } from "./DeleteBooking";
@@ -91,9 +91,17 @@ const BookingsTable = ({ bookingDatas, userId }) => {
                           Expired
                         </Chip>
                       )}
+                      {displayStatus === "Cancelled" && (
+                        <Chip color="warning" size="sm" variant="soft">
+                          Cancelled
+                        </Chip>
+                      )}
                     </Table.Cell>
                     <Table.Cell>
-                      <DeleteBooking userId={userId} bookingId={bookingData._id}></DeleteBooking>
+                      <DeleteBooking
+                        userId={userId}
+                        bookingId={bookingData._id}
+                      ></DeleteBooking>
                     </Table.Cell>
                   </Table.Row>
                 </>
