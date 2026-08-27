@@ -10,6 +10,15 @@ const BookingsTable = ({ bookingDatas, userId }) => {
     return bookingData.date < todayStr ? "Expired" : "Confirmed";
   };
 
+  if (!bookingDatas || bookingDatas.length === 0) {
+    return (
+      <div className="flex flex-col items-center justify-center rounded-lg border border-dashed border-sage-light/40 py-16 text-center">
+        <p className="text-forest-dark/70 dark:text-cream/70">
+          You have no bookings yet.
+        </p>
+      </div>
+    );
+  }
   return (
     <Table>
       <Table.ResizableContainer>
