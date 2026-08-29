@@ -67,19 +67,21 @@ const BookingsTable = ({ bookingDatas, userId }) => {
                   <Table.Row key={bookingData._id}>
                     {/* name and image */}
                     <Table.Cell>
-                    <Link href={`/rooms/${bookingData.roomId}`} className="flex items-center gap-3 font-semibold hover:text-sage">
-                      <div className="flex items-center gap-3 font-semibold">
-                        <Image
-                          src={bookingData.imageUrl}
-                          alt="User Image"
-                          width={80}
-                          height={80}
-                        ></Image>
-                        <h2>{bookingData.roomName}</h2>
-                      </div>
-                    </Link>
+                      <Link
+                        href={`/rooms/${bookingData.roomId}`}
+                        className="flex items-center gap-3 font-semibold hover:text-sage"
+                      >
+                        <div className="flex items-center gap-3 font-semibold">
+                          <Image
+                            src={bookingData.imageUrl}
+                            alt="User Image"
+                            width={80}
+                            height={80}
+                          ></Image>
+                          <h2>{bookingData.roomName}</h2>
+                        </div>
+                      </Link>
                     </Table.Cell>
-
 
                     {/* date */}
                     <Table.Cell>
@@ -114,6 +116,7 @@ const BookingsTable = ({ bookingDatas, userId }) => {
                       <DeleteBooking
                         userId={userId}
                         bookingId={bookingData._id}
+                        disabled={displayStatus !== "Confirmed"}
                       ></DeleteBooking>
                     </Table.Cell>
                   </Table.Row>

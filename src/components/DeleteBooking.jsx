@@ -5,28 +5,35 @@ import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { toast } from "react-toastify";
 
-export function DeleteBooking({ userId, bookingId }) {
+export function DeleteBooking({ userId, bookingId, disabled = false }) {
   const router = useRouter();
   const [isDeleting, setIsDeleting] = useState(false);
 
   const handleCancel = async () => {
     setIsDeleting(true);
-    const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/bookings/${bookingId}`, {
-      method: "PATCH",
-      headers: { "content-type": "application/json" },
-      body: JSON.stringify({ userId }),
-    });
-    if (!res.ok) {
-      toast.error(data.message || "Failed to cancel booking.");
-      return;
+    try {
+      const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/bookings/${bookingId}`, {
+        method: "PATCH",
+        headers: { "content-type": "application/json" },
+        body: JSON.stringify({ userId }),
+      });
+      const data = await res.json();
+      if (!res.ok) {
+        toast.error(data.message || "Failed to cancel booking.");
+        return;
+      }
+      toast.info("Room cancelled");
+      router.refresh();
+    } finally {
+      setIsDeleting(false);
     }
-    toast.info("Room cancelled");
-    router.refresh();
-    setIsDeleting(false);
   };
+
   return (
     <AlertDialog>
-      <Button variant="danger">Cancel</Button>
+      <Button variant="danger" isDisabled={disabled}>
+        {disabled ? "Cancelled" : "Cancel"}
+      </Button>
       <AlertDialog.Backdrop>
         <AlertDialog.Container>
           <AlertDialog.Dialog className="sm:max-w-[400px]">
