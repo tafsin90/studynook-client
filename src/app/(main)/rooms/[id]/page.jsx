@@ -15,7 +15,7 @@ import {
 
 export async function generateMetadata({ params }) {
   const { id } = await params;
-  const res = await fetch(`http://localhost:5000/rooms/${id}`);
+  const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/rooms/${id}`);
   const room = await res.json();
 
   return {
@@ -38,7 +38,7 @@ const RoomDetailsPage = async ({ params }) => {
   const user = session?.user;
 
   // fetching API
-  const res = await fetch(`http://localhost:5000/rooms/${id}`, {
+  const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/rooms/${id}`, {
     headers: {
       authorization: `Bearer ${token}`,
     },

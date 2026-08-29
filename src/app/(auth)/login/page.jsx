@@ -1,5 +1,5 @@
-import LoginPage from "./LoginPage"
-
+import { Suspense } from "react";
+import LoginPage from "./LoginPage";
 
 export const metadata = {
   title: "Login",
@@ -7,8 +7,10 @@ export const metadata = {
 
 const LoginPageWrapper = () => {
   return (
-    <LoginPage></LoginPage>
-  )
-}
+    <Suspense fallback={null}>
+      <LoginPage />
+    </Suspense>
+  );
+};
 
-export default LoginPageWrapper
+export default LoginPageWrapper;

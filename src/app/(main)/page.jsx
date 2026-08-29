@@ -2,7 +2,7 @@ import Banner from "@/components/Banner";
 import RoomCard from "@/components/RoomCard";
 
 export default async function Home() {
-  const res = await fetch("http://localhost:5000/");
+  const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}`);
   const sixRooms = await res.json();
 
   return (

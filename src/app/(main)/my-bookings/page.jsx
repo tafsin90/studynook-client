@@ -15,7 +15,7 @@ export default async function MyBookingsPage() {
   const userId = session?.user.id;
 
   // Update expired bookings first
-  await fetch("http://localhost:5000/bookings/status", {
+  await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/bookings/status`, {
     method: "PATCH",
     headers: {
       "content-type": "application/json",
@@ -24,7 +24,7 @@ export default async function MyBookingsPage() {
   });
 
   // get updated bookings
-  const res = await fetch(`http://localhost:5000/bookings?userId=${userId}`,{
+  const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/bookings?userId=${userId}`,{
     cache: "no-store"
   });
   const bookingDatas = await res.json();

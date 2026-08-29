@@ -1,15 +1,16 @@
-import RegisterPage from "./RegisterPage"
-
+import { Suspense } from "react";
+import RegisterPage from "./RegisterPage";
 
 export const metadata = {
   title: "Register",
 };
 
-
 const RegisterPageWrapper = () => {
   return (
-    <RegisterPage></RegisterPage>
-  )
-}
+    <Suspense fallback={null}>
+      <RegisterPage></RegisterPage>
+    </Suspense>
+  );
+};
 
-export default RegisterPageWrapper
+export default RegisterPageWrapper;

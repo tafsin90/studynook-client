@@ -6,7 +6,7 @@ import { toast } from "react-toastify";
 
 export function DeleteRoomModal({ room, user }) {
   const handleDelete = async () => {
-    const res = await fetch(`http://localhost:5000/rooms/${room._id}`, {
+    const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/rooms/${room._id}`, {
       method: "DELETE",
       headers: {
         "content-type": "application/json"

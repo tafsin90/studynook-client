@@ -14,7 +14,7 @@ const MyListingsPage = async() => {
       });
       const user = session?.user;
 
-      const res = await fetch(`http://localhost:5000/listings?userId=${user.id}`)
+      const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/listings?userId=${user.id}`)
       const listingDatas = await res.json()
       console.log(listingDatas)
   return (
