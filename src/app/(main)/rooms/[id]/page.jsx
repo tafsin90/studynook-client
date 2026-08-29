@@ -39,14 +39,23 @@ const RoomDetailsPage = async ({ params }) => {
     headers: await headers(),
   });
 
-  const res = await fetch(`${process.env.NEXT_PUBLIC_SERVER_URL}/rooms/${id}`, {
-    headers: {
-      authorization: `Bearer ${token}`,
-    },
-  });
-  if (!res.ok) {
-    throw new Error("Room not found.");
-  }
+  const fetchUrl = `${process.env.NEXT_PUBLIC_SERVER_URL}/rooms/${id}`;
+console.log("Fetching:", fetchUrl);
+
+const res = await fetch(fetchUrl, {
+  headers: {
+    authorization: `Bearer ${token}`,
+  },
+});
+
+console.log("Status:", res.status);
+console.log("Token exists:", !!token);
+
+if (!res.ok) {
+  const errorBody = await res.text();
+  console.log("Error body:", errorBody);
+  throw new Error("Room not found.");
+}
   const room = await res.json();
 
   const {
