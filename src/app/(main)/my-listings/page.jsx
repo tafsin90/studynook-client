@@ -3,6 +3,10 @@ import { auth } from "@/lib/auth";
 import { headers } from "next/headers";
 
 
+export const metadata = {
+  title: "My Listings", 
+};
+
 const MyListingsPage = async() => {
 
     const session = await auth.api.getSession({

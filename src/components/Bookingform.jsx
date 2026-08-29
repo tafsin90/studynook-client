@@ -6,6 +6,7 @@ import { DatePicker } from "@/components/DatePicker";
 import TimePicker from "@/components/TimePicker";
 import { toast } from "react-toastify";
 import { format } from "date-fns";
+import { authClient } from "@/lib/auth-client";
 
 export function BookingForm({ room, roomId, user }) {
   const router = useRouter();
@@ -77,11 +78,14 @@ export function BookingForm({ room, roomId, user }) {
 
     // console.log("Booking Data:", bookingData);
 
+    const {data: tokenData} = await authClient.token()
+    // console.log(tokenData)
     try {
       const res = await fetch("http://localhost:5000/bookings", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
+          authorization: `Bearer ${tokenData.token}`
         },
         body: JSON.stringify(bookingData),
       });

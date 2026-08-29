@@ -27,3 +27,30 @@ html.dark body {
   color: #f3f4f2;
 }
 
+
+
+
+
+
+
+
+/* Uiverse.io — 3D hover tilt, adapted for RoomCard */
+.room-card-perspective {
+  perspective: 1500px;
+}
+
+.room-card-tilt {
+  transform-style: preserve-3d;
+  will-change: transform;
+  transition: transform 0.5s;
+}
+
+.room-card-tilt:hover {
+  transform: translateZ(10px) rotateX(6deg) rotateY(6deg);
+}
+
+
+
+
+
+

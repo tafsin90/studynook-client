@@ -13,18 +13,43 @@ import {
   FaLayerGroup,
 } from "react-icons/fa6";
 
+export async function generateMetadata({ params }) {
+  const { id } = await params;
+  const res = await fetch(`http://localhost:5000/rooms/${id}`);
+  const room = await res.json();
+
+  return {
+    title: `${room.roomName} | StudyNook`,
+  };
+}
+
 const RoomDetailsPage = async ({ params }) => {
   const { id } = await params;
+  // get the token (jwt)
+  const { token } = await auth.api.getToken({
+    headers: await headers(),
+  });
+  // console.log(token)
 
+  // find the user
   const session = await auth.api.getSession({
-    headers: await headers(), // you need to pass the headers object.
+    headers: await headers(),
   });
   const user = session?.user;
 
-  const res = await fetch(`http://localhost:5000/rooms/${id}`);
+  // fetching API
+  const res = await fetch(`http://localhost:5000/rooms/${id}`, {
+    headers: {
+      authorization: `Bearer ${token}`,
+    },
+  });
+  if (!res.ok) {
+    throw new Error("You are not authorized to view this room.");
+  }
   const room = await res.json();
   // console.log(room);
   // console.log(user);
+
   const {
     userId,
     roomImageUrl,
@@ -57,7 +82,7 @@ const RoomDetailsPage = async ({ params }) => {
             <div className=" flex gap-3">
               <EditRoomModal room={room}></EditRoomModal>
 
-              <DeleteRoomModal room={room} user={user} ></DeleteRoomModal>
+              <DeleteRoomModal room={room} user={user}></DeleteRoomModal>
             </div>
           )}
         </section>

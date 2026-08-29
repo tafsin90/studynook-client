@@ -2,6 +2,7 @@ import { Chip, Table } from "@heroui/react";
 import Image from "next/image";
 import { format } from "date-fns";
 import { DeleteBooking } from "./DeleteBooking";
+import Link from "next/link";
 
 const BookingsTable = ({ bookingDatas, userId }) => {
   const todayStr = format(new Date(), "yyyy-MM-dd");
@@ -66,6 +67,7 @@ const BookingsTable = ({ bookingDatas, userId }) => {
                   <Table.Row key={bookingData._id}>
                     {/* name and image */}
                     <Table.Cell>
+                    <Link href={`/rooms/${bookingData.roomId}`} className="flex items-center gap-3 font-semibold hover:text-sage">
                       <div className="flex items-center gap-3 font-semibold">
                         <Image
                           src={bookingData.imageUrl}
@@ -75,7 +77,9 @@ const BookingsTable = ({ bookingDatas, userId }) => {
                         ></Image>
                         <h2>{bookingData.roomName}</h2>
                       </div>
+                    </Link>
                     </Table.Cell>
+
 
                     {/* date */}
                     <Table.Cell>

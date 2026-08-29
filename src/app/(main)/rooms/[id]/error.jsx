@@ -15,8 +15,12 @@ const Error = ({ error, reset }) => {
         </h1>
 
         <p className="mx-auto mb-8 max-w-xl text-lg leading-7 text-forest-dark/70 dark:text-cream/70">
-          We couldn’t load this page right now. Please try again or go back
-          to explore our study rooms.
+          We couldn’t load this page right now. Please try again or go back to
+          explore our study rooms.
+        </p>
+
+        <p className="mx-auto mb-8 max-w-xl text-sm leading-7 text-red-500">
+          {error.message}
         </p>
 
         <div className="flex flex-col justify-center gap-3 sm:flex-row">
